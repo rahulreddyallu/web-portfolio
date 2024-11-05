@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
+import Landing from './Components/Landing';
 import Work from './Components/Work';
 import About from './Components/About';
 import Contact from './Components/Contact';
@@ -11,8 +12,7 @@ function App() {
       <BrowserRouter>
         <NavBar/>
         <Routes>
-          <Route path='/*' element={<Work/>}/>
-          <Route path='/work' element={<Work/>}/>
+          <Route path='/' element={<Work/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
         </Routes>
