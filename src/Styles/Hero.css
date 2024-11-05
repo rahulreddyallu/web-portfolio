@@ -1,0 +1,58 @@
+.heroWrap {
+    position: relative;   
+}
+
+.heroBG {
+    filter: blur(100px); /* Apply blur effect */
+    position: absolute; /* Cover the entire heroWrap */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    z-index: 1; /* Position behind other content */
+    transition: background-image 1s ease-in-out; /* Smooth transition for gradient */
+}
+
+.Hero {
+    font-family: 'Acorn'; /* Set the font family */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Center vertically */
+    justify-content: flex-start; /* Align items to the left */
+    flex-direction: column; /* Column layout */
+
+    position: relative; /* Position relative to stack above background */
+    z-index: 2; /* Ensure it appears above the blurred background */
+    padding: 20px; /* Add some padding */
+    
+}
+
+.Hero h1 {
+    font-size: 5em; /* Default heading size */
+    margin: 0; /* Remove default margin */
+}
+
+.Hero h1:first-of-type {
+    font-size: 8em; /* Increase size for the first heading */
+}
+
+.Hero h1:nth-child(2) {
+    margin: 0; /* No margin for the second heading */
+    line-height: 0.8; /* Adjust line height */
+}
+
+span {
+    font-family: 'GT'; /* Font for span */
+    font-size: 1.5em; /* Size for span text */
+    margin-top: 70px; /* Margin for spacing */
+    color: hsla(171, 15%, 35%, 1); /* Color for span */
+}
+
+.text {
+    left: 10px;
+    margin-top: 170px; /* Top margin for text section */
+    display: flex; /* Flex layout for text */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Column layout */
+    position: relative; /* Allow z-index layering */
+    z-index: 3; /* Ensure text appears above background */
+}

@@ -1,0 +1,101 @@
+.contactWrap{
+    position: relative;
+}
+
+.contactBG{
+    filter: blur(100px);
+    height: 60vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 1;
+    transition: background-image 1s ease-in-out;
+}
+
+.Contact{
+    position: absolute;
+    z-index: 2;    
+}
+
+.Contact h1{
+    position: absolute;
+    top: 90px;
+    left: 500px;
+    font-family: 'Acorn';
+    font-size: 8em;
+    
+}
+
+.Contact span{
+    position: absolute;
+    top: 320px;
+    left: 300px;
+}
+
+.form1{
+    position: relative;
+    left: 140px;
+    top: 420px;
+    height: 583px;
+    width: 1184px;
+    padding-bottom: 30px;
+    background-color: rgb(183, 197, 182);
+    border-radius: 50px;
+    margin-top: 140px;
+    margin-bottom: 500px;
+
+}
+.form1 input{
+    height: 48px;
+    width: 525px;
+    border-radius: 10px;
+    border: none;
+    background-color:rgb(247, 254, 227);
+
+}
+.message input{
+    height: 190px;
+    width: 1074px;
+}
+.name{
+    position: relative;
+    top: 56px;
+    left: 55px;
+    width: 200px;
+}
+.email{
+    position: relative;
+    margin: 0px;
+    width: 200px;
+    padding: 0px;
+    bottom: 56px;
+    left: 600px;
+}
+.message{
+    position: relative;
+    top: 0px;
+    left: 56px;
+    width: 200px;
+}
+.form1 label{
+    font-size: 1.3em;
+    font-family: 'GT';
+    color: hsla(172, 95%, 18%, 1);
+    line-height: 3;
+    font-weight: 600;
+}
+#Send{
+    position: relative;
+    top: 45px;
+    left: 1025px;
+    width: 128px;
+    height: 49px;
+    padding: 13px 25px;
+    border-radius: 40px;
+    font-size: 22px;
+    font-weight: 600;
+    font-family: 'GT';
+    background-color: rgb(224, 252, 243);
+    color: hsla(172, 95%, 18%, 1);
+    border: 2px solid rgb(17, 17, 16);
+}
+

@@ -1,0 +1,53 @@
+.NavBar{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 2.5% 38%;
+    margin-bottom: 120px;
+    padding: 10px 10px;
+    font-family: 'GT';
+    font-size: 1.1em;
+    position: fixed;
+    background-color: inherit;
+    z-index: 100;
+    transition: background-color 0.3s ease-in-out;
+    border-radius: 50px;
+}
+.NavBar a{
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    margin: 0px 50px;
+    border-radius: 50px;
+    transition: background-color 0.5s ease, transform 0.3s ease 0.1s;
+    color: hsla(171, 15%, 35%, 1);
+    
+}
+.NavBar a:first-of-type{
+    margin: 0px;
+}
+.NavBar a:last-of-type{
+    margin: 0px;
+}
+  
+.NavBar.scroll{
+    background-color: hsla(45, 17%, 95%, .8);
+    backdrop-filter: blur(10px) saturate(1.7);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    
+}
+
+.NavBar a:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bubble{
+    position: absolute;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 75px;
+    height: 30px;
+    right: 295px;
+    border-radius: 50px;
+    transition: background-color 0.5s ease, transform 0.3s ease 0.1s; ;
+}

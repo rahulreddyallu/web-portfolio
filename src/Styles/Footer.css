@@ -1,0 +1,35 @@
+.Footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: inherit;
+    height: 400px;
+}
+.grids{
+    position: absolute;
+    left: 960px;
+    margin: 100px 0px;
+    display: grid;
+    grid-template-columns: 200px 100px;
+    grid-template-rows: 60px 60px;
+    font-family: 'GT';
+}
+.head1, .head2{
+    font-weight: 700;
+    font-size: 1.1em;
+}
+a{
+    text-decoration: none;
+    color: hsla(171, 15%, 35%, 1);
+    transition: 0.5 ease-in;
+}
+
+a:hover{
+    color: hsla(172, 95%, 18%, 1);
+}
+.credits{
+    position: relative;
+    left: 180px;
+    bottom: 50px;
+    color: hsla(171, 15%, 35%, 1);
+}
