@@ -9,10 +9,11 @@ import NavBar from './Components/NavBar';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/web-portfolio" >
         <NavBar/>
         <Routes>
-          <Route path='/' element={<Work/>}/>
+          <Route path='/' element={<Navigate to="/work"/>}/>
+          <Route path='/work' element={<Work/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
         </Routes>
