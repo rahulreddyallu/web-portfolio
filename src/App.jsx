@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter,Routes, Route } from 'react-router-dom';
+import { BrowserRouter,Routes, Route , Navigate} from 'react-router-dom';
 import Landing from './Components/Landing';
 import Work from './Components/Work';
 import About from './Components/About';
