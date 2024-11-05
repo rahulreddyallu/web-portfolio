@@ -12,10 +12,11 @@ function App() {
       <BrowserRouter basename="/web-portfolio" >
         <NavBar/>
         <Routes>
-          <Route path='/' element={<Navigate to="/work"/>}/>
+          <Route path='/' element={<Landing/>}/>
           <Route path='/work' element={<Work/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contact' element={<Contact/>}/>
+          <Route path='/web-portfolio' element={<Navigate to="/work" />} />
         </Routes>
       </BrowserRouter>
     </div>
