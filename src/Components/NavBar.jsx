@@ -2,67 +2,73 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../Styles/NavBar.css';
 
+const NAV_ITEMS = [
+  { name: "Work", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" }
+];
+
+// Bubble animation config for each tab (responsive values)
+const BUBBLE_CONFIG = [
+  { width: 77, tX: 0 },
+  { width: 85, tX: 80 },
+  { width: 102, tX: 175 }
+];
+
+const TITLES = [
+  "Rahul's Work",
+  "Who’s Rahul?",
+  "Let's Connect!"
+];
+
 export default function NavBar() {
-  const icons = [
-    { name: "Work", width: 77.09, height: 32.5 },
-    { name: "About", width: 85.63, height: 32.5 },
-    { name: "Contact", width: 102, height: 32.5 }
-  ];
-
-  const iconTr = [
-    { name: "Work", tX: 133.9 },
-    { name: "About", tX: 135 },
-    { name: "Contact", tX: 143 }
-  ];
-
-  const location = useLocation(); // Get the current location
-  const [index, setIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('index');
-    return savedIndex ? parseInt(savedIndex) : 0;
+  const location = useLocation();
+  const [activeIdx, setActiveIdx] = useState(() => {
+    const idx = NAV_ITEMS.findIndex(item => item.path === location.pathname);
+    return idx >= 0 ? idx : 0;
   });
+  const [isScrolled, setScrolled] = useState(false);
 
-  const [isScrolled, setScroll] = useState(false);
-
+  // Change page title based on route
   useEffect(() => {
-    const titles = ["Rahul's Work", "Who’s Rahul?", "Lets Connect!"];
-    document.title = titles[index];
-  }, [index]);
+    document.title = TITLES[activeIdx] || 'Rahul Reddy Allu';
+  }, [activeIdx]);
 
+  // Sticky navbar effect
   useEffect(() => {
-    const scrolled = () => {
-      setScroll(window.scrollY > 80);
-    };
-
-    window.addEventListener('scroll', scrolled);
-    return () => {
-      window.removeEventListener('scroll', scrolled);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Sync active index to location change (SPA correct navigation)
   useEffect(() => {
-    localStorage.setItem('index', index);
-  }, [index]);
-
-  // Update index based on the current location
-  useEffect(() => {
-    switch (location.pathname) {
-      case '/about':
-        setIndex(1);
-        break;
-      case '/contact':
-        setIndex(2);
-        break;
-      default:
-        setIndex(0);
-    }
+    const idx = NAV_ITEMS.findIndex(item => item.path === location.pathname);
+    setActiveIdx(idx >= 0 ? idx : 0);
   }, [location.pathname]);
 
   return (
-    <div className={`NavBar ${isScrolled ? 'scroll' : ''}`}>
-      <div className="bubble" style={{ transform: `translateX(${index * iconTr[index].tX}px)`, height: icons[index].height, width: icons[index].width }}></div>
-      <Link to='/' onClick={() => setIndex(0)}>Work</Link>
-      <Link to='/about' onClick={() => setIndex(1)}>About</Link>
-      <Link to='/contact' onClick={() => setIndex(2)}>Contact</Link>
-    </div>
+    <nav className={`NavBar${isScrolled ? ' scroll' : ''}`} role="navigation" aria-label="Site Navigation">
+      <div
+        className="nav-bubble"
+        style={{
+          width: BUBBLE_CONFIG[activeIdx].width,
+          transform: `translateX(${BUBBLE_CONFIG[activeIdx].tX}px)`
+        }}
+        aria-hidden="true"
+      />
+      {NAV_ITEMS.map((item, idx) => (
+        <Link
+          key={item.name}
+          to={item.path}
+          className={`nav-link${activeIdx === idx ? ' active' : ''}`}
+          tabIndex={0}
+          aria-current={activeIdx === idx ? "page" : undefined}
+          onClick={() => setActiveIdx(idx)}
+        >
+          {item.name}
+        </Link>
+      ))}
+    </nav>
   );
 }
