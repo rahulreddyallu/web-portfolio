@@ -1,92 +1,131 @@
-import React from 'react'
-import '../Styles/About.css'
-import { useState,useEffect } from 'react';
-import myImage from '../Assets/Portrait1-2.png' 
-import Footer from './Footer';
+import React, { useState, useEffect } from 'react';
+import '../Styles/About.css';
+import myImage from '../Assets/Portrait1-2.png';
 
 export default function About() {
+  // Animated gradient background
+  const [scrollY, setScrollY] = useState(0);
 
-  const gradientStops = [
-    'hsla(60, 100%, 75%, 1)',   // Bright Lemon Yellow
-    'hsla(58, 100%, 78%, 1)',   // Light Lemon Yellow
-    'hsla(56, 100%, 80%, 1)',   // Soft Lemon Yellow
-    'hsla(54, 100%, 82%, 1)',   // Light Pastel Yellow
-    'hsla(52, 100%, 84%, 1)',   // Pale Butter Yellow
-    'hsla(50, 100%, 85%, 1)',   // Soft Butter Yellow
-    'hsla(48, 100%, 87%, 1)',   // Soft Pale Yellow
-    'hsla(45, 100%, 90%, 1)',   // Soft Lemon
-    'hsla(43, 100%, 90%, 1)',   // Light Primrose Yellow
-    'hsla(40, 100%, 90%, 1)',   // Soft Primrose Cream
-    'hsla(38, 90%, 90%, 1)',    // Soft Lemon Cream
-    'hsla(36, 90%, 90%, 1)',    // Light Lemon Cream
-    'hsla(34, 90%, 90%, 1)',    // Soft Cream Yellow
-    'hsla(32, 90%, 85%, 1)',    // Pastel Yellow Green
-    'hsla(30, 90%, 85%, 1)',    // Light Lemon Green
-    'hsla(120, 90%, 75%, 1)',   // Pastel Green
-    'hsla(110, 90%, 75%, 1)',   // Light Spring Green
-    'hsla(100, 90%, 75%, 1)',   // Soft Sage Green
-    'hsla(90, 80%, 75%, 1)',    // Light Fern Green
-    'hsla(80, 80%, 75%, 1)',    // Light Olive Green
-    'hsla(70, 80%, 75%, 1)',    // Soft Grass Green
-    'hsla(65, 80%, 75%, 1)',    // Light Mint Green
-    'hsla(60, 80%, 75%, 1)',    // Light Mint Tea
-    'hsla(55, 80%, 75%, 1)',    // Very Light Green
-    'hsla(50, 80%, 80%, 1)',    // Light Pastel Mint
-    'hsla(45, 80%, 80%, 1)',    // Soft Mint Cream
-    'hsla(40, 80%, 80%, 1)',    // Light Lime Green
-    'hsla(35, 90%, 85%, 1)',    // Soft Lime Yellow
-    'hsla(30, 90%, 90%, 1)',    // Light Lime Yellow
-    'hsla(25, 90%, 90%, 1)',    // Light Olive Yellow
-    'hsla(20, 90%, 90%, 1)',    // Light Melon Green
-    'hsla(15, 90%, 90%, 1)',    // Very Light Pear Green
-    'hsla(10, 100%, 90%, 1)',   // Soft Lemon Lime
-    'hsla(5, 60%, 90%, 1)',     // Very Light Creamy Yellow
-    'hsla(0, 50%, 95%, 1)',     // Soft Lemon
-    'hsla(20, 40%, 85%, 1)',    // Light Meadow Green
-    'hsla(150, 50%, 85%, 1)',   // Light Mint Green
-    'hsla(100, 50%, 90%, 1)',   // Soft Mint Yellow
-    'hsla(75, 50%, 85%, 1)',    // Light Yellowish Green
-    'hsla(85, 60%, 85%, 1)',    // Light Pastel Green
-    'hsla(45, 50%, 85%, 1)',    // Light Olive Green
-    'hsla(40, 70%, 85%, 1)',    // Soft Honeydew
-    'hsla(60, 40%, 85%, 1)',    // Light Grass Green
-    'hsla(55, 30%, 85%, 1)',    // Light Yellow Green
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
 
-  const [currentGradient, setCurrentGradient] = useState(`linear-gradient(to bottom, ${gradientStops.join(', ')})`);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    useEffect(() => {
-        const cycleGradient = setInterval(() => {
-            const firstColor = gradientStops.shift(); 
-            gradientStops.push(firstColor);  
-            setCurrentGradient(`linear-gradient(to top right, ${gradientStops.join(', ')})`);
-        }, 200);
-
-        return () => clearInterval(cycleGradient); 
-    }, []);
-
+  const gradientOpacity = Math.min(scrollY / 500, 0.3);
 
   return (
-      <div className="AboutWrap">
-        <div className="AboutBG" style={{backgroundImage:currentGradient}}></div>
-        <div className='About' >
-          <div className="AboutText">
-            <h1>Rahul Reddy Allu.</h1>
-            <div className="content1">
-              <div className="image"><img src={myImage} height={330} width={367}  alt="" /></div>
-              <div className="text1">
-                <div className="head1"><span>I'm a Full-Stack Software Developer working from Bengaluru, India.</span></div>
-                <span className='body1'>Over the past year, I have spent my time learning various areas of Software Development, which includes Core Java, SQl, J2EE, Hibernate and Spring, as well as front-end technologies like HTML5, CSS, JavaScript and React.js.</span>
-              </div>
-            </div>
-            <div className="content2">
-              
+    <div className="About">
+      {/* Animated Background */}
+      <div 
+        className="about-bg-gradient"
+        style={{
+          opacity: 0.6 + gradientOpacity,
+          transform: `translateY(${scrollY * 0.5}px)`
+        }}
+      />
+
+      {/* Main Content Container */}
+      <div className="about-container">
+        {/* Header Section */}
+        <header className="about-header">
+          <h1>About Me</h1>
+          <p className="about-subtitle">
+            Business Analyst | SaaS Integration Specialist | FinTech Enthusiast
+          </p>
+        </header>
+
+        {/* Content Grid */}
+        <div className="about-content">
+          {/* Text Content */}
+          <div className="about-text">
+            <section className="about-section">
+              <h2>Who I Am</h2>
+              <p>
+                I'm a <strong>Business Analyst</strong> specializing in SaaS integrations and 
+                enterprise database migrations. I bridge the gap between technical implementation 
+                and customer success, ensuring seamless platform adoption.
+              </p>
+              <p>
+                With a background in <strong>Civil Engineering</strong> and a passion for technology, 
+                I've transitioned into the world of software and finance, where I combine analytical 
+                thinking with technical execution.
+              </p>
+            </section>
+
+            <section className="about-section">
+              <h2>What I Do</h2>
+              <ul className="skills-list">
+                <li>
+                  <span className="skill-icon">🔗</span>
+                  <div>
+                    <strong>SaaS Integration Management</strong>
+                    <p>Designing and implementing seamless data flows between enterprise systems</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="skill-icon">📊</span>
+                  <div>
+                    <strong>Data Analysis & Migration</strong>
+                    <p>Managing complex database migrations and ensuring data integrity</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="skill-icon">💹</span>
+                  <div>
+                    <strong>FinTech Development</strong>
+                    <p>Building algorithmic trading systems and market analysis tools</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="skill-icon">🤝</span>
+                  <div>
+                    <strong>Client Relationship Management</strong>
+                    <p>Supporting enterprise clients through platform adoption and optimization</p>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <section className="about-section">
+              <h2>My Journey</h2>
+              <p>
+                From engineering foundations to business analysis and software development, 
+                my career has been driven by curiosity and a commitment to continuous learning. 
+                I'm currently focused on <strong>algorithmic trading</strong> and building 
+                products that solve real-world problems.
+              </p>
+            </section>
+          </div>
+
+          {/* Image Section */}
+          <div className="about-image">
+            <div className="image-wrapper">
+              <img 
+                src={myImage} 
+                alt="Rahul Reddy Allu - Business Analyst and Developer" 
+                loading="lazy"
+              />
+              <div className="image-overlay"></div>
             </div>
           </div>
         </div>
-        <div className="foot"><Footer/></div>
+
+        {/* Call to Action */}
+        <div className="about-cta">
+          <h3>Let's Work Together</h3>
+          <p>
+            I'm always open to discussing new opportunities, collaborations, or just connecting 
+            with fellow professionals in tech and finance.
+          </p>
+          <a href="/contact" className="cta-button">
+            Get in Touch
+          </a>
+        </div>
       </div>
-      
-      
-  )
+    </div>
+  );
 }
