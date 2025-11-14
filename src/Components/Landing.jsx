@@ -1,33 +1,56 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Work from './Work';
 import '../Styles/Landing.css';
 
 export default function Landing() {
   return (
-    <main className="Landing" role="main" aria-label="Home Landing">
-      <section className="hero">
+    <div className="Landing">
+      {/* Hero Section */}
+      <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-content">
-          <h1>Hi, I'm Rahul Reddy Allu</h1>
+          <h1 id="hero-heading">Hi, I'm Rahul Reddy Allu</h1>
           <p className="hero-tagline">
-            A passionate web developer crafting engaging digital experiences.<br/>
-            Explore my work, get to know me, and let’s connect!
+            A passionate Business Analyst and developer crafting engaging digital experiences 
+            with a focus on SaaS integrations and FinTech innovation.
           </p>
+          
+          {/* Call-to-action buttons */}
           <div className="hero-actions">
-            <a href="https://github.com/rahulreddyallu" className="action-btn" target="_blank" rel="noopener noreferrer">
+            <a 
+              href="https://github.com/rahulreddyallu" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="action-btn"
+              aria-label="Visit my GitHub profile"
+            >
               My GitHub
             </a>
-            <a href="/CV" className="action-btn" aria-label="Download CV">
-              CV
+            
+            <a 
+              href="/path-to-your-cv.pdf" 
+              download
+              className="action-btn"
+              aria-label="Download my CV"
+            >
+              Download CV
             </a>
-            <a href="/contact" className="action-btn" aria-label="Contact Rahul">
-              Contact
-            </a>
+            
+            <Link 
+              to="/contact" 
+              className="action-btn"
+              aria-label="Go to contact page"
+            >
+              Let's Connect
+            </Link>
           </div>
         </div>
       </section>
-      <section className="featured-work" aria-label="Featured Work">
+
+      {/* Featured Work Section */}
+      <section className="featured-work" aria-labelledby="work-heading">
         <Work />
       </section>
-    </main>
+    </div>
   );
 }
