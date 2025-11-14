@@ -1,100 +1,289 @@
-import React, { useState, useEffect } from "react";
-import "../Styles/Contact.css";
-import Footer from "./Footer";
+import React, { useState } from 'react';
+import '../Styles/Contact.css';
 
 export default function Contact() {
-  const gradientStops = [
-    'hsla(60, 100%, 75%, 1)',   // Bright Lemon Yellow
-    'hsla(58, 100%, 78%, 1)',   // Light Lemon Yellow
-    'hsla(56, 100%, 80%, 1)',   // Soft Lemon Yellow
-    'hsla(54, 100%, 82%, 1)',   // Light Pastel Yellow
-    'hsla(52, 100%, 84%, 1)',   // Pale Butter Yellow
-    'hsla(50, 100%, 85%, 1)',   // Soft Butter Yellow
-    'hsla(48, 100%, 87%, 1)',   // Soft Pale Yellow
-    'hsla(45, 100%, 90%, 1)',   // Soft Lemon
-    'hsla(43, 100%, 90%, 1)',   // Light Primrose Yellow
-    'hsla(40, 100%, 90%, 1)',   // Soft Primrose Cream
-    'hsla(38, 90%, 90%, 1)',    // Soft Lemon Cream
-    'hsla(36, 90%, 90%, 1)',    // Light Lemon Cream
-    'hsla(34, 90%, 90%, 1)',    // Soft Cream Yellow
-    'hsla(32, 90%, 85%, 1)',    // Pastel Yellow Green
-    'hsla(30, 90%, 85%, 1)',    // Light Lemon Green
-    'hsla(120, 90%, 75%, 1)',   // Pastel Green
-    'hsla(110, 90%, 75%, 1)',   // Light Spring Green
-    'hsla(100, 90%, 75%, 1)',   // Soft Sage Green
-    'hsla(90, 80%, 75%, 1)',    // Light Fern Green
-    'hsla(80, 80%, 75%, 1)',    // Light Olive Green
-    'hsla(70, 80%, 75%, 1)',    // Soft Grass Green
-    'hsla(65, 80%, 75%, 1)',    // Light Mint Green
-    'hsla(60, 80%, 75%, 1)',    // Light Mint Tea
-    'hsla(55, 80%, 75%, 1)',    // Very Light Green
-    'hsla(50, 80%, 80%, 1)',    // Light Pastel Mint
-    'hsla(45, 80%, 80%, 1)',    // Soft Mint Cream
-    'hsla(40, 80%, 80%, 1)',    // Light Lime Green
-    'hsla(35, 90%, 85%, 1)',    // Soft Lime Yellow
-    'hsla(30, 90%, 90%, 1)',    // Light Lime Yellow
-    'hsla(25, 90%, 90%, 1)',    // Light Olive Yellow
-    'hsla(20, 90%, 90%, 1)',    // Light Melon Green
-    'hsla(15, 90%, 90%, 1)',    // Very Light Pear Green
-    'hsla(10, 100%, 90%, 1)',   // Soft Lemon Lime
-    'hsla(5, 60%, 90%, 1)',     // Very Light Creamy Yellow
-    'hsla(0, 50%, 95%, 1)',     // Soft Lemon
-    'hsla(20, 40%, 85%, 1)',    // Light Meadow Green
-    'hsla(150, 50%, 85%, 1)',   // Light Mint Green
-    'hsla(100, 50%, 90%, 1)',   // Soft Mint Yellow
-    'hsla(75, 50%, 85%, 1)',    // Light Yellowish Green
-    'hsla(85, 60%, 85%, 1)',    // Light Pastel Green
-    'hsla(45, 50%, 85%, 1)',    // Light Olive Green
-    'hsla(40, 70%, 85%, 1)',    // Soft Honeydew
-    'hsla(60, 40%, 85%, 1)',    // Light Grass Green
-    'hsla(55, 30%, 85%, 1)',    // Light Yellow Green
-];
+  // Form state management
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
-const [currentGradient, setCurrentGradient] = useState(`linear-gradient(to bottom, ${gradientStops.join(', ')})`);
+  const [formStatus, setFormStatus] = useState({
+    submitting: false,
+    submitted: false,
+    error: null
+  });
 
-useEffect(() => {
-    const cycleGradient = setInterval(() => {
-        const firstColor = gradientStops.shift(); 
-        gradientStops.push(firstColor);  
-        setCurrentGradient(`linear-gradient(to top right, ${gradientStops.join(', ')})`);
-    }, 200);
+  const [errors, setErrors] = useState({});
 
-    return () => clearInterval(cycleGradient); 
-}, []);
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: null
+      }));
+    }
+  };
 
-  let [email, setEmail] = useState("");
-  let [name, setName] = useState("");
-  let [message, setMessage] = useState("");
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+
+    return newErrors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setFormStatus({ submitting: true, submitted: false, error: null });
+
+    try {
+      // Replace this with your actual form submission logic
+      // For example: sending to an API endpoint, EmailJS, or Formspree
+      
+      // Simulated API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Success
+      setFormStatus({ submitting: false, submitted: true, error: null });
+      setFormData({ name: '', email: '', message: '' });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setFormStatus({ submitting: false, submitted: false, error: null });
+      }, 5000);
+
+    } catch (error) {
+      setFormStatus({ 
+        submitting: false, 
+        submitted: false, 
+        error: 'Something went wrong. Please try again.' 
+      });
+    }
+  };
 
   return (
-    <div className="contactWrap">
-      <div className="contactBG" style={{ backgroundImage: currentGradient }}></div>
-      <div className="Contact">
-      <h1>Contact.</h1>
-      <span>I'm currently available for freelance work whilst considering my next permanent position.
-      If you would like to catch up to discuss any opportunities please send &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;me a message.
-      </span>
-      <form className="form1">
-        <div className="name">
-          <label htmlFor="name">NAME</label>
-          <br />
-          <input type="text" id="name" />
+    <div className="Contact">
+      {/* Animated Background */}
+      <div className="contact-bg-gradient" />
+
+      {/* Main Content */}
+      <div className="contact-container">
+        {/* Header */}
+        <header className="contact-header">
+          <h1>Let's Connect</h1>
+          <p className="contact-subtitle">
+            Have a question, project idea, or just want to say hello? 
+            I'd love to hear from you.
+          </p>
+        </header>
+
+        {/* Two Column Layout */}
+        <div className="contact-content">
+          {/* Contact Information */}
+          <div className="contact-info">
+            <h2>Get in Touch</h2>
+            <p>
+              I'm always open to discussing new opportunities, collaborations, 
+              or answering any questions you might have.
+            </p>
+
+            <div className="info-items">
+              <div className="info-item">
+                <span className="info-icon">📧</span>
+                <div>
+                  <h3>Email</h3>
+                  <a href="mailto:rahul@example.com">rahul@example.com</a>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <span className="info-icon">💼</span>
+                <div>
+                  <h3>LinkedIn</h3>
+                  <a 
+                    href="https://linkedin.com/in/yourprofile" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    linkedin.com/in/yourprofile
+                  </a>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <span className="info-icon">💻</span>
+                <div>
+                  <h3>GitHub</h3>
+                  <a 
+                    href="https://github.com/yourusername" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    github.com/yourusername
+                  </a>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <span className="info-icon">📍</span>
+                <div>
+                  <h3>Location</h3>
+                  <p>India</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="contact-form-wrapper">
+            <form className="contact-form" onSubmit={handleSubmit} noValidate>
+              {/* Success Message */}
+              {formStatus.submitted && (
+                <div className="alert alert-success" role="alert">
+                  <strong>✓ Message sent successfully!</strong>
+                  <p>Thank you for reaching out. I'll get back to you soon.</p>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {formStatus.error && (
+                <div className="alert alert-error" role="alert">
+                  <strong>✕ {formStatus.error}</strong>
+                </div>
+              )}
+
+              {/* Name Field */}
+              <div className="form-group">
+                <label htmlFor="name">
+                  Name <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={errors.name ? 'error' : ''}
+                  placeholder="Your name"
+                  disabled={formStatus.submitting}
+                  aria-required="true"
+                  aria-invalid={errors.name ? 'true' : 'false'}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
+                />
+                {errors.name && (
+                  <span className="error-message" id="name-error" role="alert">
+                    {errors.name}
+                  </span>
+                )}
+              </div>
+
+              {/* Email Field */}
+              <div className="form-group">
+                <label htmlFor="email">
+                  Email <span className="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={errors.email ? 'error' : ''}
+                  placeholder="your.email@example.com"
+                  disabled={formStatus.submitting}
+                  aria-required="true"
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
+                />
+                {errors.email && (
+                  <span className="error-message" id="email-error" role="alert">
+                    {errors.email}
+                  </span>
+                )}
+              </div>
+
+              {/* Message Field */}
+              <div className="form-group">
+                <label htmlFor="message">
+                  Message <span className="required">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className={errors.message ? 'error' : ''}
+                  placeholder="Tell me about your project or inquiry..."
+                  rows="6"
+                  disabled={formStatus.submitting}
+                  aria-required="true"
+                  aria-invalid={errors.message ? 'true' : 'false'}
+                  aria-describedby={errors.message ? 'message-error' : undefined}
+                />
+                {errors.message && (
+                  <span className="error-message" id="message-error" role="alert">
+                    {errors.message}
+                  </span>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={formStatus.submitting}
+                aria-busy={formStatus.submitting}
+              >
+                {formStatus.submitting ? (
+                  <>
+                    <span className="spinner"></span>
+                    Sending...
+                  </>
+                ) : (
+                  'Send Message'
+                )}
+              </button>
+            </form>
+          </div>
         </div>
-        <div className="email">
-          <label htmlFor="email">EMAIL ADDRESS</label>
-          <br />
-          <input type="text" id="email" />
-        </div>
-        <div className="message">
-          <label htmlFor="message">MESSAGE</label>
-          <br />
-          <input type="text" id="message" />
-        </div>
-        <a href="" id="Send">Send</a>
-      </form>
-      <Footer/>
       </div>
-      
     </div>
   );
 }
