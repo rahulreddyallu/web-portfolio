@@ -1,55 +1,96 @@
 import React from 'react';
-import Hero from './Hero';
 import '../Styles/Work.css';
 
-// Example project data structure
+// Project data - update this with your actual projects
 const projects = [
   {
-    title: "Portfolio Website (Current Project)",
-    status: "In Progress",
-    description: "Personal web portfolio – design, development, and full-stack implementation.",
-    tags: ["React", "Design", "UI/UX", "Frontend"],
-    url: "https://github.com/rahulreddyallu/web-portfolio"
+    id: 1,
+    title: 'QuantM10 Trading Bot',
+    url: 'https://github.com/yourusername/quantm10',
+    status: 'In Progress',
+    description: 'An algorithmic trading bot leveraging machine learning for market signal generation and automated execution strategies.',
+    tags: ['Python', 'Machine Learning', 'FinTech', 'Trading APIs']
   },
   {
-    title: "Design Concepts",
-    status: "Concept",
-    description: "Experimental design systems and user flows for future products.",
-    tags: ["Concept", "Figma", "Prototype"]
+    id: 2,
+    title: 'SaaS Integration Platform',
+    url: 'https://github.com/yourusername/saas-integration',
+    status: 'Completed',
+    description: 'Enterprise-grade integration platform managing data flows between multiple SaaS vendors and client systems.',
+    tags: ['API Integration', 'Data Migration', 'Enterprise Software']
   },
-  // Add more projects here with title, description, tags, and links.
+  {
+    id: 3,
+    title: 'Portfolio Website',
+    url: null,
+    status: 'Live',
+    description: 'Personal portfolio website showcasing projects and professional experience, built with modern web technologies.',
+    tags: ['React', 'JavaScript', 'Responsive Design']
+  }
 ];
 
 export default function Work() {
   return (
-    <main className="Work" aria-label="Work Showcase">
-      <Hero />
-      <section className="work-section">
-        <h2>Projects & Progress</h2>
+    <div className="Work">
+      <div className="work-section">
+        <h2 id="work-heading">My Work</h2>
         <p className="work-intro">
-          Here’s a snapshot of my work—covering design and development from ideation to implementation.
+          Here are some projects I've been working on. Each one represents a unique challenge 
+          and an opportunity to learn and grow as a developer and analyst.
         </p>
-        <div className="project-list">
-          {projects.map((project, idx) => (
-            <article className="project-card" key={idx}>
+
+        <div className="project-list" role="list">
+          {projects.map((project) => (
+            <article 
+              key={project.id} 
+              className="project-card"
+              role="listitem"
+            >
+              {/* Project Title */}
               <h3 className="project-title">
                 {project.url ? (
-                  <a href={project.url} target="_blank" rel="noopener noreferrer">
+                  <a 
+                    href={project.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`View ${project.title} on GitHub`}
+                  >
                     {project.title}
                   </a>
-                ) : project.title}
+                ) : (
+                  <span>{project.title}</span>
+                )}
               </h3>
-              <span className={`project-status ${project.status.toLowerCase()}`}>{project.status}</span>
-              <p className="project-description">{project.description}</p>
-              <div className="project-tags">
-                {project.tags.map(tag => (
-                  <span className="tag" key={tag}>{tag}</span>
+
+              {/* Status Badge */}
+              <span 
+                className={`project-status ${project.status.toLowerCase().replace(' ', '-')}`}
+                aria-label={`Project status: ${project.status}`}
+              >
+                {project.status}
+              </span>
+
+              {/* Description */}
+              <p className="project-description">
+                {project.description}
+              </p>
+
+              {/* Technology Tags */}
+              <div className="project-tags" role="list" aria-label="Technologies used">
+                {project.tags.map((tag, index) => (
+                  <span 
+                    key={index} 
+                    className="tag"
+                    role="listitem"
+                  >
+                    {tag}
+                  </span>
                 ))}
               </div>
             </article>
           ))}
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
