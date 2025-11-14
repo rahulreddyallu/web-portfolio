@@ -1,20 +1,50 @@
-import React from 'react'
-import '../Styles/Footer.css'
-export default function () {
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../Styles/Footer.css';
 
+const currentYear = new Date().getFullYear();
 
+export default function Footer() {
   return (
-    <div className='Footer' id='footer'>
-        <div className="credits">© 2024 &nbsp; Rahul Reddy Allu
+    <footer className="Footer" id="footer" role="contentinfo" aria-label="Site Footer">
+      <div className="footer-content">
+        <div className="credits">
+          &copy; {currentYear} Rahul Reddy Allu
         </div>
-        <div className="grids">
-            <div className="head1">Elsewhere</div>
-            <div className="head2">Contact</div>
-            <div><a target='blank' href="https://github.com/rahulreddyallu">GitHub</a></div>
-            <div><a href="/CV">CV</a></div>
-            <div><a target='blank' href="https://www.linkedin.com/in/rahulreddyallu/">LinkedIn</a></div>
-            <div><a href="/contact">Message</a></div>
-        </div>
-    </div>
-  )
+        <nav className="footer-links" aria-label="Footer navigation">
+          <div className="footer-section">
+            <div className="footer-title">Elsewhere</div>
+            <ul>
+              <li>
+                <a href="https://github.com/rahulreddyallu" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+                  <span className="footer-icon github" /> GitHub
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/rahulreddyallu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+                  <span className="footer-icon linkedin" /> LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-section">
+            <div className="footer-title">Contact</div>
+            <ul>
+              <li>
+                <Link to="/contact" aria-label="Go to Contact page">
+                  Message
+                </Link>
+              </li>
+              {/* CV route: If /CV is a page, use Link; if it’s a file, use <a> */}
+              <li>
+                <a href="/CV" aria-label="Open CV file or CV page">
+                  CV
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </footer>
+  );
 }
