@@ -1,0 +1,89 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  build:
+    name: Build React Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build React Application
+        run: npm run build
+        env:
+          CI: true
+          NODE_ENV: production
+
+      - name: 🔍 Verify Build Output
+        run: |
+          if [ ! -d "build" ]; then
+            echo "❌ Build folder not found!"
+            exit 1
+          fi
+
+          echo "📁 Build folder contents:"
+          ls -lah build/
+
+          echo "📦 Total build size:"
+          du -sh build/ | cut -f1
+
+      - name: 📤 Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 🚀 Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 🎉 Deployment Successful
+        run: |
+          echo "====================================================="
+          echo "🚀 Deployment completed successfully!"
+          echo "Your site is available at:"
+          echo "${{ steps.deployment.outputs.page_url }}"
+          echo "====================================================="
+          echo "Note: It may take 1–2 minutes for updates to reflect."
+          echo "Use Ctrl+Shift+R (Cmd+Shift+R on Mac) for hard refresh."
+          echo "====================================================="
