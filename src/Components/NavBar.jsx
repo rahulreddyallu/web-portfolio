@@ -8,67 +8,122 @@ const NAV_ITEMS = [
   { name: "Contact", path: "/contact" }
 ];
 
-// Bubble animation config for each tab (responsive values)
-const BUBBLE_CONFIG = [
-  { width: 77, tX: 0 },
-  { width: 85, tX: 80 },
-  { width: 102, tX: 175 }
-];
-
 const TITLES = [
   "Rahul's Work",
-  "Who’s Rahul?",
-  "Let's Connect!"
+  "About Rahul",
+  "Contact Rahul"
 ];
 
 export default function NavBar() {
   const location = useLocation();
-  const [activeIdx, setActiveIdx] = useState(() => {
-    const idx = NAV_ITEMS.findIndex(item => item.path === location.pathname);
-    return idx >= 0 ? idx : 0;
-  });
+  const [activeIdx, setActiveIdx] = useState(0);
   const [isScrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Change page title based on route
+  // Update active index based on current route
+  useEffect(() => {
+    const idx = NAV_ITEMS.findIndex(item => item.path === location.pathname);
+    setActiveIdx(idx >= 0 ? idx : 0);
+    setMobileMenuOpen(false); // Close mobile menu on route change
+  }, [location.pathname]);
+
+  // Update page title
   useEffect(() => {
     document.title = TITLES[activeIdx] || 'Rahul Reddy Allu';
   }, [activeIdx]);
 
-  // Sticky navbar effect
+  // Handle scroll for navbar background
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Sync active index to location change (SPA correct navigation)
+  // Prevent scroll when mobile menu is open
   useEffect(() => {
-    const idx = NAV_ITEMS.findIndex(item => item.path === location.pathname);
-    setActiveIdx(idx >= 0 ? idx : 0);
-  }, [location.pathname]);
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
-    <nav className={`NavBar${isScrolled ? ' scroll' : ''}`} role="navigation" aria-label="Site Navigation">
-      <div
-        className="nav-bubble"
-        style={{
-          width: BUBBLE_CONFIG[activeIdx].width,
-          transform: `translateX(${BUBBLE_CONFIG[activeIdx].tX}px)`
-        }}
-        aria-hidden="true"
-      />
-      {NAV_ITEMS.map((item, idx) => (
-        <Link
-          key={item.name}
-          to={item.path}
-          className={`nav-link${activeIdx === idx ? ' active' : ''}`}
-          tabIndex={0}
-          aria-current={activeIdx === idx ? "page" : undefined}
-          onClick={() => setActiveIdx(idx)}
-        >
-          {item.name}
+    <>
+      <nav className={`NavBar ${isScrolled ? 'scrolled' : ''}`} role="navigation" aria-label="Main navigation">
+        {/* Logo/Name */}
+        <Link to="/" className="nav-logo" aria-label="Home">
+          <span className="logo-text">Rahul Reddy</span>
         </Link>
-      ))}
-    </nav>
+
+        {/* Desktop Navigation */}
+        <div className="nav-links-desktop">
+          {NAV_ITEMS.map((item, idx) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-link ${activeIdx === idx ? 'active' : ''}`}
+              aria-current={activeIdx === idx ? 'page' : undefined}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className={`mobile-menu-btn ${isMobileMenuOpen ? 'open' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span className="menu-icon"></span>
+        </button>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div 
+        className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
+        onClick={toggleMobileMenu}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+          <div className="mobile-menu-header">
+            <span className="mobile-logo">Rahul Reddy</span>
+            <button
+              className="mobile-close-btn"
+              onClick={toggleMobileMenu}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
+          </div>
+
+          <nav className="mobile-nav-links">
+            {NAV_ITEMS.map((item, idx) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`mobile-nav-link ${activeIdx === idx ? 'active' : ''}`}
+                onClick={toggleMobileMenu}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
   );
 }
